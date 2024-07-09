@@ -1,4 +1,5 @@
-'''import os
+''' CNN
+import os
 import numpy as np
 import pandas as pd
 import librosa
@@ -13,7 +14,7 @@ from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPooling1D, Flatte
 from tensorflow.keras.utils import to_categorical
 
 # Set the paths
-audio_dir = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\audios"
+audio_dir = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\audios"
 model_save_path = "bird_sound_model.keras"
 
 # Function to extract features from audio files
@@ -36,7 +37,7 @@ def load_data(audio_dir):
         species_dir = os.path.join(audio_dir, species)
         if os.path.isdir(species_dir):
             for audio_file in os.listdir(species_dir):
-                if audio_file.endswith(".mp3"):  # Check for MP3 files
+                if audio_file.endswith(".mp3") or audio_file.endswith(".wav"):  # Check for MP3 files
                     audio_path = os.path.join(species_dir, audio_file)
                     print(f"Loading: {audio_path}")
                     feature = features_extractor(audio_path)
@@ -110,43 +111,60 @@ plt.xlabel('Predicted Classes')
 plt.ylabel('Original Classes')
 plt.show()'''
 
+#SVM
 import os
 import numpy as np
-import pandas as pd
 import librosa
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix, accuracy_score
+import seaborn as sns
+import pickle
 
 # Set the paths
 audio_dir = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\audios"
-model_save_path = "bird_sound_model_svm.pkl"
+model_save_path = "bird_sound_model_hybrid.pkl"
 
 # Function to extract features from audio files
 def features_extractor(file):
-    audio, sample_rate = librosa.load(file, sr=None, mono=True, res_type='kaiser_fast')
-    if audio.size == 0:
-        print(f"Empty audio file: {file}")
-        return np.array([])  # Return empty array if audio is empty
+    try:
+        audio, sample_rate = librosa.load(file, sr=None, mono=True, res_type='kaiser_fast')
+        if audio.size == 0:
+            print(f"Empty audio file: {file}")
+            return np.array([])  # Return empty array if audio is empty
 
-    # Extract MFCCs
-    mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=80)
-    mfccs_scaled_features = np.mean(mfccs.T, axis=0)
-    
-    # Extract Chroma feature
-    chroma = librosa.feature.chroma_stft(y=audio, sr=sample_rate)
-    chroma_scaled_features = np.mean(chroma.T, axis=0)
-    
-    # Extract Spectral Contrast feature
-    spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=sample_rate)
-    spectral_contrast_scaled_features = np.mean(spectral_contrast.T, axis=0)
-    
-    # Combine features
-    combined_features = np.hstack((mfccs_scaled_features, chroma_scaled_features, spectral_contrast_scaled_features))
-    return combined_features
+        # Extract MFCCs
+        mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=80)
+        mfccs_scaled_features = np.mean(mfccs.T, axis=0)
+
+        # Extract Chroma feature
+        chroma = librosa.feature.chroma_stft(y=audio, sr=sample_rate)
+        chroma_scaled_features = np.mean(chroma.T, axis=0)
+
+        # Extract Spectral Contrast feature
+        spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=sample_rate)
+        spectral_contrast_scaled_features = np.mean(spectral_contrast.T, axis=0)
+
+        # Extract Mel Spectrogram
+        mel_spectrogram = librosa.feature.melspectrogram(y=audio, sr=sample_rate)
+        mel_spectrogram_scaled_features = np.mean(mel_spectrogram.T, axis=0)
+
+        # Extract Zero Crossing Rate
+        zero_crossing_rate = librosa.feature.zero_crossing_rate(y=audio)
+        zero_crossing_rate_scaled_features = np.mean(zero_crossing_rate.T, axis=0)
+
+        # Extract Root Mean Square Energy
+        rmse = librosa.feature.rms(y=audio)
+        rmse_scaled_features = np.mean(rmse.T, axis=0)
+
+        # Combine features
+        combined_features = np.hstack((mfccs_scaled_features, chroma_scaled_features, spectral_contrast_scaled_features, mel_spectrogram_scaled_features, zero_crossing_rate_scaled_features, rmse_scaled_features))
+        return combined_features
+    except Exception as e:
+        print(f"Error processing {file}: {e}")
+        return np.array([])
 
 # Load and prepare the dataset
 def load_data(audio_dir):
@@ -156,7 +174,7 @@ def load_data(audio_dir):
         species_dir = os.path.join(audio_dir, species)
         if os.path.isdir(species_dir):
             for audio_file in os.listdir(species_dir):
-                if audio_file.endswith(".mp3"):  # Check for MP3 files
+                if audio_file.endswith(".mp3") or audio_file.endswith(".wav"):  # Check for MP3 or WAV files
                     audio_path = os.path.join(species_dir, audio_file)
                     print(f"Loading: {audio_path}")
                     feature = features_extractor(audio_path)
@@ -166,7 +184,7 @@ def load_data(audio_dir):
                     else:
                         print(f"Skipping empty feature: {audio_path}")
                 else:
-                    print(f"Skipping non-MP3 file: {audio_file}")
+                    print(f"Skipping non-audio file: {audio_file}")
         else:
             print(f"Skipping non-directory: {species_dir}")
     
@@ -187,12 +205,21 @@ features_scaled = scaler.fit_transform(features)
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(features_scaled, encoded_labels, test_size=0.2, random_state=42)
 
-# Initialize and train the SVM classifier
-svm_model = SVC(kernel='rbf', C=10, gamma='scale', probability=True)  # Experiment with different kernels and hyperparameters
-svm_model.fit(X_train, y_train)
+# Optimize SVM hyperparameters using GridSearchCV
+param_grid = {
+    'C': [0.1, 1, 10, 100],
+    'gamma': ['scale', 'auto'],
+    'kernel': ['rbf', 'poly', 'sigmoid']
+}
+
+svm = SVC(probability=True)
+grid_search = GridSearchCV(svm, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+best_svm_model = grid_search.best_estimator_
 
 # Make predictions
-y_pred = svm_model.predict(X_test)
+y_pred = best_svm_model.predict(X_test)
 
 # Evaluate the model
 accuracy = accuracy_score(y_test, y_pred)
@@ -209,6 +236,5 @@ plt.ylabel('Original Classes')
 plt.show()
 
 # Save the model
-import pickle
 with open(model_save_path, 'wb') as file:
-    pickle.dump(svm_model, file)
+    pickle.dump(best_svm_model, file)
