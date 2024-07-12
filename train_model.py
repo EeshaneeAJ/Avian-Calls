@@ -12,8 +12,6 @@ import pickle
 # Set the paths
 audio_dir = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\audios"
 model_save_path = "bird_sound_model_hybrid.pkl"
-label_encoder_path = "label_encoder.pkl"
-scaler_path = "scaler.pkl"
 
 # Function to extract features from audio files
 def features_extractor(file):
@@ -123,12 +121,6 @@ plt.xlabel('Predicted Classes')
 plt.ylabel('Original Classes')
 plt.show()
 
-# Save the model, label encoder, and scaler
+# Save the model
 with open(model_save_path, 'wb') as file:
     pickle.dump(best_svm_model, file)
-
-with open(label_encoder_path, 'wb') as file:
-    pickle.dump(label_encoder, file)
-
-with open(scaler_path, 'wb') as file:
-    pickle.dump(scaler, file)

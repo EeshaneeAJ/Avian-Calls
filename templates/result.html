@@ -1,10 +1,93 @@
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Information</title>
+</head>
+<body>
+    <h2>Bird Information</h2>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% else %}
+        <p>Scientific Name: {{ bird_info['scientific_name'] }}</p>
+        <p>Summary: {{ bird_info['summary'] }}</p>
+        <p>More information: <a href="{{ bird_info['url'] }}">Wikipedia</a></p>
+    {% endif %}
+</body>
+</html>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bird Sound Classifier - Result</title>
+    <title>Bird Information</title>
 </head>
 <body>
-    <h1>Bird Sound Classifier - Result</h1>
-    <p>Identified Bird Species: {{ species }}</p>
+    <h2>Bird Information</h2>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% else %}
+        <p>Name: {{ bird_info['scientific_name'] }}</p>
+        <p>Summary: {{ bird_info['summary'] }}</p>
+        {% if bird_info['image_url'] %}
+            <img src="{{ bird_info['image_url'] }}" alt="{{ bird_info['scientific_name'] }}" width="300">
+        {% endif %}
+        <p>More information: <a href="{{ bird_info['url'] }}">Wikipedia</a></p>
+    {% endif %}
+</body>
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Information</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a5d6a7; /* Darker green background */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2e7d32; /* Dark green */
+        }
+        p {
+            color: #4caf50; /* Medium green */
+        }
+        a {
+            color: #1b5e20; /* Darker green */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Bird Information</h2>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% else %}
+            <p><strong>Scientific Name:</strong> {{ bird_info['scientific_name'] }}</p>
+            <p><strong>Summary:</strong> {{ bird_info['summary'] }}</p>
+            {% if bird_info['image_url'] %}
+                <img src="{{ bird_info['image_url'] }}" alt="{{ bird_info['scientific_name'] }}">
+            {% endif %}
+            <p>More information: <a href="{{ bird_info['url'] }}">Wikipedia</a></p>
+        {% endif %}
+    </div>
 </body>
 </html>
