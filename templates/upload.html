@@ -1,0 +1,219 @@
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Sound Classification</title>
+</head>
+<body>
+    <h2>Upload Bird Sound Audio File</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".mp3,.wav">
+        <button type="submit">Upload</button>
+    </form>
+    {% if error_message %}
+        <p style="color:red;">{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Sound Classification</title>
+</head>
+<body>
+    <h2>Upload Bird Sound Audio File</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".mp3,.wav">
+        <button type="submit">Upload</button>
+    </form>
+    {% if error_message %}
+        <p style="color:red;">{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Sound Classification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a5d6a7; /* Darker green background */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2e7d32; /* Dark green */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4caf50; /* Medium green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #388e3c; /* Darker green */
+        }
+        p {
+            color: #d32f2f; /* Red for error messages */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Bird Sound Audio File</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".mp3,.wav">
+            <button type="submit">Upload</button>
+        </form>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Sound Classification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a5d6a7; /* Darker green background */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2e7d32; /* Dark green */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4caf50; /* Medium green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #388e3c; /* Darker green */
+        }
+        p {
+            color: #d32f2f; /* Red for error messages */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Bird Sound Audio File</h2>
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".mp3,.wav">
+            <button type="submit">Upload</button>
+        </form>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Bird Sound</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #a5d6a7; /* Darker green background */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* White background for the container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2e7d32; /* Dark green */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4caf50; /* Medium green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #388e3c; /* Darker green */
+        }
+        p {
+            color: #d32f2f; /* Red for error messages */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Bird Sound Audio File</h2>
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".mp3,.wav">
+            <button type="submit">Upload</button>
+        </form>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
