@@ -9,10 +9,11 @@ import folium
 app = Flask(__name__)
 
 # Load the model, label encoder, and scaler
-model_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\bird_sound_model_hybrid.pkl"
-label_encoder_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\label_encoder.pkl"
-scaler_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\scaler.pkl"
-excel_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\Birds_info.xlsx"
+model_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\bird_sound_model_hybrid.pkl"
+label_encoder_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\label_encoder.pkl"
+scaler_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\scaler.pkl"
+excel_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\Birds_info.xlsx"
+
 
 with open(model_path, 'rb') as file:
     model = pickle.load(file)
