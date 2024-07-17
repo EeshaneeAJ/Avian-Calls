@@ -89,26 +89,6 @@ def highlight_countries(bird_info):
 def index():
     return render_template('index.html')
 
-'''@app.route('/explore')
-def explore():
-    birds = bird_details.to_dict(orient='records')
-    return render_template('explore.html', birds=birds)
-@app.route('/bird/<bird_name>')
-def bird_details(bird_name):
-    bird_info = bird_details[bird_details['Bird Name'].str.strip() == bird_name.strip()]
-    if bird_info.empty:
-        return render_template('explore.html', error_message=f'No information found for {bird_name}')
-
-    bird_info = bird_info.iloc[0]
-
-    # Generate the map with highlighted countries
-    bird_map = highlight_countries(bird_info)
-
-    # Save the map in the static directory
-    map_path = os.path.join(app.root_path, 'static', 'map.html')
-    bird_map.save(map_path)
-
-    return render_template('result.html', bird_info=bird_info)'''
 @app.route('/explore')
 def explore():
     birds = bird_details.to_dict(orient='records')
@@ -123,7 +103,7 @@ def bird_details_route(bird_name):
     bird_info = bird_info.iloc[0].to_dict()
 
     # Correctly format the audio file path
-    bird_info['Audio'] = 'audio/' + bird_info['Audio'].replace('\\', '/')
+    bird_info['Audio'] = bird_info['Audio'].replace('\\', '/')
 
     # Generate the map with highlighted countries
     bird_map = highlight_countries(bird_info)
@@ -132,9 +112,10 @@ def bird_details_route(bird_name):
     map_path = os.path.join(app.root_path, 'static', 'map.html')
     bird_map.save(map_path)
 
-    print(bird_info['Audio'])  # This will help debug the correct path
+    print(bird_info['Audio'])  # Debugging
 
     return render_template('result.html', bird_info=bird_info)
+
 
 
 
@@ -142,24 +123,6 @@ def bird_details_route(bird_name):
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
-
-'''def highlight_countries(bird_info):
-    countries = bird_info['Origin'].split(',')
-    countries = [country.strip() for country in countries]
-
-    # Load country shapefiles from the downloaded dataset
-    world = gpd.read_file('data/ne_110m_admin_0_countries.shp')
-
-    bird_map = folium.Map(location=[20, 0], zoom_start=2)
-
-    for country in countries:
-        country_shape = world[world['NAME'] == country]
-        if not country_shape.empty:
-            geo_j = folium.GeoJson(country_shape, style_function=lambda x: {'fillColor': 'orange'})
-            geo_j.add_to(bird_map)
-
-    return bird_map'''
-
 
 
 @app.route('/predict', methods=['POST'])
@@ -192,11 +155,13 @@ def predict():
         predicted_bird = label_encoder.inverse_transform(prediction)[0]
 
         # Fetch bird details
+   
         bird_info = bird_details[bird_details['Bird Name'].str.strip() == predicted_bird.strip()]
         if bird_info.empty:
-            return render_template('upload.html', error_message=f'No information found for {predicted_bird}')
-        
+           return render_template('upload.html', error_message=f'No information found for {predicted_bird}')
+    
         bird_info = bird_info.iloc[0].to_dict()
+        bird_info['Audio'] = bird_info['Audio'].replace('\\', '/')
 
         # Generate the map with highlighted countries
         bird_map = highlight_countries(bird_info)

@@ -1,374 +1,110 @@
-<!--<!DOCTYPE html>
-<html>
-<head>
-    <title>Explore Birds</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-        }
-        .container {
-            text-align: center;
-            background-color: #ffffff; /* White background for the container */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #2e7d32; /* Dark green */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Explore Birds</h2>
-        <p>Details of different birds will be displayed here.</p>
-    </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Explore Birds</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-            padding: 20px;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px; /* Set a max-width for the container */
-            width: 100%;
-        }
-        h2 {
-            color: #2e7d32;
-            text-align: center;
-            margin-top: 0; /* Remove any default margin at the top */
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columns */
-            gap: 20px;
-        }
-        .card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-        }
-        img {
-            max-width: 100%;
-            height: auto; /* Ensure the image scales proportionally */
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Explore Birds</h2>
-        <div class="grid">
-            {% for bird in birds %}
-            <div class="card">
-                <h3>{{ bird['Bird Name'] }}</h3>
-                <img src="{{ bird['Image'] }}" alt="{{ bird['Bird Name'] }}">
-                <table>
-                    <tr><td>Scientific Name:</td><td>{{ bird['Scientific Name'] }}</td></tr>
-                    <tr><td>Origin:</td><td>{{ bird['Origin'] }}</td></tr>
-                    <tr><td>Species:</td><td>{{ bird['Species'] }}</td></tr>
-                    <tr><td>Features:</td><td>{{ bird['Features'] }}</td></tr>
-                    <tr><td>Habitat:</td><td>{{ bird['Habitat'] }}</td></tr>
-                </table>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Explore Birds</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-            padding: 20px;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px; /* Set a max-width for the container */
-            width: 100%;
-        }
-        h2 {
-            color: #2e7d32;
-            text-align: center;
-            margin-top: 0; /* Remove any default margin at the top */
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columns */
-            gap: 20px;
-        }
-        .card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-        }
-        .card h3 {
-            margin-bottom: 10px;
-        }
-        .details {
-            display: none; /* Initially hide the details */
-            text-align: left;
-            margin-top: 20px;
-        }
-        .details img {
-            max-width: 100%;
-            height: auto; /* Ensure the image scales proportionally */
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-        .learn-more {
-            background-color: #4caf50; /* Medium green */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .learn-more:hover {
-            background-color: #388e3c; /* Darker green */
-        }
-    </style>
-    <script>
-        function toggleDetails(index) {
-            var details = document.getElementById("details-" + index);
-            if (details.style.display === "none") {
-                details.style.display = "block";
-            } else {
-                details.style.display = "none";
-            }
-        }
-    </script>
-</head>
-<body>
-    <div class="container">
-        <h2>Explore Birds</h2>
-        <div class="grid">
-            {% for bird in birds %}
-            <div class="card">
-                <h3>{{ bird['Bird Name'] }}</h3>
-                <button class="learn-more" onclick="toggleDetails({{ loop.index0 }})">Learn More</button>
-                <div class="details" id="details-{{ loop.index0 }}">
-                    <img src="{{ bird['Image'] }}" alt="{{ bird['Bird Name'] }}">
-                    <table>
-                        <tr><td>Scientific Name:</td><td>{{ bird['Scientific Name'] }}</td></tr>
-                        <tr><td>Origin:</td><td>{{ bird['Origin'] }}</td></tr>
-                        <tr><td>Species:</td><td>{{ bird['Species'] }}</td></tr>
-                        <tr><td>Features:</td><td>{{ bird['Features'] }}</td></tr>
-                        <tr><td>Habitat:</td><td>{{ bird['Habitat'] }}</td></tr>
-                    </table>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Explore Birds</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-            padding: 20px;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px; /* Set a max-width for the container */
-            width: 100%;
-        }
-        h2 {
-            color: #2e7d32;
-            text-align: center;
-            margin-top: 0; /* Remove any default margin at the top */
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columns */
-            gap: 20px;
-        }
-        .card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-        }
-        .card h3 {
-            margin-bottom: 10px;
-        }
-        .details {
-            display: none; /* Initially hide the details */
-            text-align: left;
-            margin-top: 20px;
-        }
-        .details img {
-            max-width: 100%;
-            height: auto; /* Ensure the image scales proportionally */
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-        .learn-more {
-            background-color: #4caf50; /* Medium green */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .learn-more:hover {
-            background-color: #388e3c; /* Darker green */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Explore Birds</h2>
-        <div class="grid">
-            {% for bird in birds %}
-            <div class="card">
-                <h3>{{ bird['Bird Name'] }}</h3>
-                <a class="learn-more" href="{{ url_for('bird_details_route', bird_name=bird['Bird Name']) }}">Learn More</a>
-
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Birds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Cormorant Garamond', serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
         }
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
-        }
-        .bird-card {
             background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
             text-align: center;
-            width: calc(33.33% - 40px); /* Three cards per row with 10px margin on each side */
-            box-sizing: border-box; /* Ensures padding and margin are included in the width calculation */
+            color: #B22222; /* Red color */
+            margin-bottom: 30px;
+            font-size: 2.5em;
         }
-        .bird-card img {
-            max-width: 100%;
-            border-radius: 10px;
+        .bird-list {
+            list-style: none;
+            padding: 0;
         }
-        .bird-card h3 {
+        .bird-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+        .bird-item img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .bird-info {
+            flex-grow: 1;
+        }
+        .bird-info h3 {
+            margin: 0;
+            color: #444;
+            font-size: 1.5em;
+        }
+        .bird-info p {
             margin: 10px 0;
-            color: #333;
+            color: #666;
+            font-size: 1em;
         }
         .learn-more {
-            display: inline-block;
             padding: 10px 20px;
-            margin-top: 10px;
-            background-color: #4CAF50;
+            background-color: #8B4513; /* Wood color */
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
+            transition: background-color 0.2s;
+            align-self: flex-start;
         }
         .learn-more:hover {
-            background-color: #45a049;
+            background-color: #B22222; /* Red color on hover */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        {% for bird in birds %}
-        <div class="bird-card">
-            <img src="{{ bird['Image'] }}" alt="{{ bird['Bird Name'] }}">
-            <h3>{{ bird['Bird Name'] }}</h3>
-            <a class="learn-more" href="{{ url_for('bird_details_route', bird_name=bird['Bird Name']) }}">Learn More</a>
-        </div>
-        {% endfor %}
+        <h1>Explore Birds</h1>
+        <ul class="bird-list">
+            {% for bird in birds %}
+            <li class="bird-item">
+                <img src="{{ {
+                    'Alexandrine Parakeet': 'https://media.istockphoto.com/id/470458487/photo/male-alexandrine-parakeet.jpg?s=612x612&w=0&k=20&c=yVdh9ksvCFRqutZpTkm_hmUzt1w_g0RJEms9NqtxQEs=',
+                    'Andaman Woodpecker': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/161387561/900',
+                    'Asian Barred Owlet': 'https://i.pinimg.com/736x/69/e9/db/69e9db0057e5de6b3b8a1f81dc5b6f79.jpg',
+                    'Asian Koel': 'https://s3.animalia.bio/animals/photos/full/original/oZZdz930D0EXKBt9HM13.webp',
+                    'Black-billed Brushturkey': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/261579121/320',
+                    'Colombian Chachalaca': 'https://wildexpedition.com/wp-content/uploads/2023/08/Chachalaca-Colombiana-Ortalis-columbiana-01.jpg',
+                    'Common Crane': 'https://media.istockphoto.com/id/1703720789/photo/bird-common-crane-grus-grus-walking-on-a-meadow-spring-time-poland-europe.jpg?s=612x612&w=0&k=20&c=-F0RO7wjD-ZH9xf_LsY9QikZds68lcGxm05TgsZfxL4=',
+                    'Common Tailorbird': 'https://cdn.britannica.com/66/131066-050-0C58CB37/Common-tailorbird.jpg',
+                    'Crested Serpent Eagle': 'https://images.pexels.com/photos/17555070/pexels-photo-17555070/free-photo-of-crested-serpent-eagle-in-nature.jpeg',
+                    'Himalayan Cuckoo': 'https://as1.ftcdn.net/v2/jpg/01/57/34/84/1000_F_157348431_eRQOPZDp62wQj3NnXOPyS7y7KYa3lTeG.jpg',
+                    'House Sparrow': 'https://c1.wallpaperflare.com/preview/954/890/571/home-sparrow-beautiful-sparrow-pakistani-sparrow-sparrow.jpg',
+                    'Indian Blackbird': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDkxjyciUbP-aseVA2vmkJPiDrSR4s0aShNA&s',
+                    'Large billed Crow': 'https://s3.animalia.bio/animals/photos/full/original/2560px-jungle-crow-28close-up-of-the-head-area292c-tennc58dji-park2c-osaka-ii.webp',
+                    'Leafbird': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/608554623/320',
+                    'Little Chachalaca': 'https://www.shutterstock.com/image-photo/colombian-chachalaca-perched-on-tree-600w-2400448869.jpg',
+                    'Pale-chinned blue flycatcher': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/171225351/320',
+                    'Philippine Megapode': 'https://upload.wikimedia.org/wikipedia/commons/9/92/Megapodius_cumingii_-North_Sulawesi%2C_Indonesia-8.jpg',
+                    'SriLankan Frogmouth': 'https://www.shutterstock.com/image-photo/avian-sri-lanka-bird-photos-600w-2391376801.jpg',
+                    'Tawny-breasted Tinamou': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/608842317/480',
+                }[bird['Bird Name']] }}" alt="{{ bird['Bird Name'] }}">
+                <div class="bird-info">
+                    <h3>{{ bird['Bird Name'] }}</h3>
+                    <p>{{ bird['Description'] }}</p>
+                    <a class="learn-more" href="{{ url_for('bird_details_route', bird_name=bird['Bird Name']) }}">Learn More</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>
-
-
-

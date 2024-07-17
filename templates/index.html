@@ -1,60 +1,8 @@
-<!--<!DOCTYPE html>
-<html>
-<head>
-    <title>Bird Sound Classification</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-        }
-        .container {
-            text-align: center;
-            background-color: #ffffff; /* White background for the container */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .menu a {
-            background-color: #4caf50; /* Medium green */
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            text-align: center;
-            width: 150px;
-        }
-        .menu a:hover {
-            background-color: #388e3c; /* Darker green */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Welcome to Bird Sound Classification</h2>
-        <p>Choose an option to get started:</p>
-        <div class="menu">
-            <a href="/explore">Explore</a>
-            <a href="/upload">Upload & Classify</a>
-        </div>
-    </div>
-</body>
-</html>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Bird Sound Classifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -62,87 +10,50 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7;
+            font-family: 'Cormorant Garamond', serif;
+            background-image: url('https://ideogram.ai/assets/progressive-image/balanced/response/p0XDRlHwRD2gpbXmiNDcFg'); /* Add your background image URL here */
+            background-size: cover; /* Ensures the image covers the whole background */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Ensures the background stays fixed while scrolling */
         }
         .container {
             text-align: center;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for background image visibility */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #8B4513; /* Wood color border */
+            max-width: 500px;
+            width: 100%;
         }
         h2 {
-            color: #2e7d32;
+            color: #B22222; /* Red color */
+            font-size: 2em;
+            margin-bottom: 20px;
         }
         .button {
-            background-color: #4caf50;
+            background-color: #8B4513; /* Wood color */
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 5px;
             cursor: pointer;
-            margin: 10px;
-        }
-        .button:hover {
-            background-color: #388e3c;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Welcome to Bird Sound Classifier</h2>
-        <a href="{{ url_for('explore') }}" class="button">Explore Birds</a>
-        <a href="{{ url_for('upload') }}" class="button">Upload & Classify</a>
-    </div>
-</body>
-</html>-->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bird Sound Classifier</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7;
-        }
-        .container {
-            text-align: center;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #2e7d32;
-        }
-        .button {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
+            margin: 15px;
+            font-size: 1em;
             text-decoration: none; /* Remove underline from links */
+            transition: background-color 0.3s ease;
         }
         .button:hover {
-            background-color: #388e3c;
+            background-color: #B22222; /* Red color on hover */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Welcome to Bird Sound Classifier</h2>
+        <h2>Welcome to Bird Sound Classifier</h2><br><br>
         <a href="{{ url_for('explore') }}" class="button">Explore Birds</a>
         <a href="{{ url_for('upload') }}" class="button">Upload & Classify</a>
     </div>
 </body>
 </html>
-
-
