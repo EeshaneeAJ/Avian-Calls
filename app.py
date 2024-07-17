@@ -1,11 +1,14 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template,redirect
 import os
 import numpy as np
 import librosa
 import pickle
 import pandas as pd
 import folium
-
+from folium.plugins import MarkerCluster
+import geopandas as gpd
+from shapely.geometry import Point
+import joblib
 app = Flask(__name__)
 
 # Load the model, label encoder, and scaler
@@ -24,8 +27,9 @@ with open(label_encoder_path, 'rb') as file:
 with open(scaler_path, 'rb') as file:
     scaler = pickle.load(file)
 
-# Read the bird details from the Excel file
-bird_details = pd.read_excel(excel_path)
+# Load bird details from Excel
+bird_details_path = os.path.join(app.root_path,'Birds_info.xlsx')
+bird_details = pd.read_excel(bird_details_path)
 
 # Function to extract features from audio files
 def features_extractor(file):
@@ -65,83 +69,139 @@ def features_extractor(file):
     except Exception as e:
         print(f"Error processing {file}: {e}")
         return np.array([])
+def highlight_countries(bird_info):
+    countries = bird_info['Origin'].split(',')
+    countries = [country.strip() for country in countries]
+
+    world = gpd.read_file('data/ne_110m_admin_0_countries.shp')
+
+    bird_map = folium.Map(location=[20, 0], zoom_start=2)
+
+    for country in countries:
+        country_shape = world[world['NAME'] == country]
+        if not country_shape.empty:
+            geo_j = folium.GeoJson(country_shape, style_function=lambda x: {'fillColor': 'orange'})
+            geo_j.add_to(bird_map)
+
+    return bird_map
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+'''@app.route('/explore')
+def explore():
+    birds = bird_details.to_dict(orient='records')
+    return render_template('explore.html', birds=birds)
+@app.route('/bird/<bird_name>')
+def bird_details(bird_name):
+    bird_info = bird_details[bird_details['Bird Name'].str.strip() == bird_name.strip()]
+    if bird_info.empty:
+        return render_template('explore.html', error_message=f'No information found for {bird_name}')
+
+    bird_info = bird_info.iloc[0]
+
+    # Generate the map with highlighted countries
+    bird_map = highlight_countries(bird_info)
+
+    # Save the map in the static directory
+    map_path = os.path.join(app.root_path, 'static', 'map.html')
+    bird_map.save(map_path)
+
+    return render_template('result.html', bird_info=bird_info)'''
 @app.route('/explore')
 def explore():
     birds = bird_details.to_dict(orient='records')
     return render_template('explore.html', birds=birds)
 
+@app.route('/bird/<bird_name>')
+def bird_details_route(bird_name):
+    bird_info = bird_details[bird_details['Bird Name'].str.strip() == bird_name.strip()]
+    if bird_info.empty:
+        return render_template('explore.html', error_message=f'No information found for {bird_name}')
+
+    bird_info = bird_info.iloc[0].to_dict()
+
+    # Generate the map with highlighted countries
+    bird_map = highlight_countries(bird_info)
+
+    # Save the map in the static directory
+    map_path = os.path.join(app.root_path, 'static', 'map.html')
+    bird_map.save(map_path)
+
+    return render_template('result.html', bird_info=bird_info)
+
+
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
 
+'''def highlight_countries(bird_info):
+    countries = bird_info['Origin'].split(',')
+    countries = [country.strip() for country in countries]
+
+    # Load country shapefiles from the downloaded dataset
+    world = gpd.read_file('data/ne_110m_admin_0_countries.shp')
+
+    bird_map = folium.Map(location=[20, 0], zoom_start=2)
+
+    for country in countries:
+        country_shape = world[world['NAME'] == country]
+        if not country_shape.empty:
+            geo_j = folium.GeoJson(country_shape, style_function=lambda x: {'fillColor': 'orange'})
+            geo_j.add_to(bird_map)
+
+    return bird_map'''
+
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
-        return render_template('upload.html', error_message='No file part')
+        return redirect(request.url)
     
     file = request.files['file']
-    
     if file.filename == '':
-        return render_template('upload.html', error_message='No selected file')
-
+        return redirect(request.url)
+    
     if file:
-        features = features_extractor(file)
-        if features.size == 0:
-            return render_template('upload.html', error_message='Error processing audio file')
+        # Save the uploaded file to a temporary location
+        file_path = os.path.join('temp', file.filename)
+        file.save(file_path)
 
-        scaled_features = scaler.transform([features])
-        prediction = model.predict(scaled_features)
+        # Load the SVM model and other necessary components
+        svm_model = joblib.load(model_path)
+        label_encoder = joblib.load('label_encoder.pkl')
+        scaler = joblib.load('scaler.pkl')
+
+        # Extract features from the audio file (you need to define extract_features)
+        features =features_extractor(file_path)
+
+        # Scale the features
+        features_scaled = scaler.transform([features])
+
+        # Predict the bird species
+        prediction = svm_model.predict(features_scaled)
         predicted_bird = label_encoder.inverse_transform(prediction)[0]
 
-        # Debugging prints
-        print(f"Predicted Bird: {predicted_bird}")
-        
-        # Find bird details in the DataFrame
+        # Fetch bird details
         bird_info = bird_details[bird_details['Bird Name'].str.strip() == predicted_bird.strip()]
-        
         if bird_info.empty:
-            # Debugging print to see all available bird names
-            available_birds = bird_details['Bird Name'].str.strip().tolist()
-            print(f"Available Bird Names: {available_birds}")
-            
             return render_template('upload.html', error_message=f'No information found for {predicted_bird}')
-
-        bird_info = bird_info.iloc[0]  # Access the first row
         
-        # Debugging prints
-        print(f"Bird Info: {bird_info}")
-        print(f"Bird Details: {bird_details}")
+        bird_info = bird_info.iloc[0].to_dict()
 
-        # Generate the map
-        def parse_coordinates(coord):
-            """Helper function to convert coordinates to decimal degrees."""
-            coord = coord.strip()
-            if '°N' in coord:
-                return float(coord.rstrip('°N'))
-            elif '°S' in coord:
-                return -float(coord.rstrip('°S'))
-            elif '°E' in coord:
-                return float(coord.rstrip('°E'))
-            elif '°W' in coord:
-                return -float(coord.rstrip('°W'))
-            else:
-                return float(coord)
+        # Generate the map with highlighted countries
+        bird_map = highlight_countries(bird_info)
 
-        latitude = parse_coordinates(bird_info['Latitude'])
-        longitude = parse_coordinates(bird_info['Longitude'])
-
-        bird_map = folium.Map(location=[latitude, longitude], zoom_start=10)
-        folium.Marker([latitude, longitude], popup=predicted_bird).add_to(bird_map)
-        
-        # Save the map in the templates directory
+        # Save the map in the static directory
         map_path = os.path.join(app.root_path, 'static', 'map.html')
         bird_map.save(map_path)
+
         return render_template('result.html', bird_info=bird_info)
+
+    return redirect(request.url)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
