@@ -12,10 +12,10 @@ import joblib
 app = Flask(__name__)
 
 # Load the model, label encoder, and scaler
-model_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\bird_sound_model_hybrid.pkl"
-label_encoder_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\label_encoder.pkl"
-scaler_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\scaler.pkl"
-excel_path = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\Birds_info.xlsx"
+model_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\bird_sound_model_hybrid.pkl"
+label_encoder_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\label_encoder.pkl"
+scaler_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\scaler.pkl"
+excel_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\Birds_info.xlsx"
 
 
 with open(model_path, 'rb') as file:
@@ -113,7 +113,7 @@ def bird_details(bird_name):
 def explore():
     birds = bird_details.to_dict(orient='records')
     return render_template('explore.html', birds=birds)
-
+   
 @app.route('/bird/<bird_name>')
 def bird_details_route(bird_name):
     bird_info = bird_details[bird_details['Bird Name'].str.strip() == bird_name.strip()]
@@ -122,6 +122,9 @@ def bird_details_route(bird_name):
 
     bird_info = bird_info.iloc[0].to_dict()
 
+    # Correctly format the audio file path
+    bird_info['Audio'] = 'audio/' + bird_info['Audio'].replace('\\', '/')
+
     # Generate the map with highlighted countries
     bird_map = highlight_countries(bird_info)
 
@@ -129,7 +132,11 @@ def bird_details_route(bird_name):
     map_path = os.path.join(app.root_path, 'static', 'map.html')
     bird_map.save(map_path)
 
+    print(bird_info['Audio'])  # This will help debug the correct path
+
     return render_template('result.html', bird_info=bird_info)
+
+
 
 
 @app.route('/upload')
