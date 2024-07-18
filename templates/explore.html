@@ -26,25 +26,26 @@
             margin-bottom: 30px;
             font-size: 2.5em;
         }
-        .bird-list {
-            list-style: none;
-            padding: 0;
+        .bird-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
         .bird-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .bird-item img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            margin-right: 20px;
-        }
-        .bird-info {
-            flex-grow: 1;
+            margin-bottom: 20px;
         }
         .bird-info h3 {
             margin: 0;
@@ -63,7 +64,7 @@
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.2s;
-            align-self: flex-start;
+            margin-top: auto;
         }
         .learn-more:hover {
             background-color: #B22222; /* Red color on hover */
@@ -73,38 +74,18 @@
 <body>
     <div class="container">
         <h1>Explore Birds</h1>
-        <ul class="bird-list">
+        <div class="bird-grid">
             {% for bird in birds %}
-            <li class="bird-item">
-                <img src="{{ {
-                    'Alexandrine Parakeet': 'https://media.istockphoto.com/id/470458487/photo/male-alexandrine-parakeet.jpg?s=612x612&w=0&k=20&c=yVdh9ksvCFRqutZpTkm_hmUzt1w_g0RJEms9NqtxQEs=',
-                    'Andaman Woodpecker': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/161387561/900',
-                    'Asian Barred Owlet': 'https://i.pinimg.com/736x/69/e9/db/69e9db0057e5de6b3b8a1f81dc5b6f79.jpg',
-                    'Asian Koel': 'https://s3.animalia.bio/animals/photos/full/original/oZZdz930D0EXKBt9HM13.webp',
-                    'Black-billed Brushturkey': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/261579121/320',
-                    'Colombian Chachalaca': 'https://wildexpedition.com/wp-content/uploads/2023/08/Chachalaca-Colombiana-Ortalis-columbiana-01.jpg',
-                    'Common Crane': 'https://media.istockphoto.com/id/1703720789/photo/bird-common-crane-grus-grus-walking-on-a-meadow-spring-time-poland-europe.jpg?s=612x612&w=0&k=20&c=-F0RO7wjD-ZH9xf_LsY9QikZds68lcGxm05TgsZfxL4=',
-                    'Common Tailorbird': 'https://cdn.britannica.com/66/131066-050-0C58CB37/Common-tailorbird.jpg',
-                    'Crested Serpent Eagle': 'https://images.pexels.com/photos/17555070/pexels-photo-17555070/free-photo-of-crested-serpent-eagle-in-nature.jpeg',
-                    'Himalayan Cuckoo': 'https://as1.ftcdn.net/v2/jpg/01/57/34/84/1000_F_157348431_eRQOPZDp62wQj3NnXOPyS7y7KYa3lTeG.jpg',
-                    'House Sparrow': 'https://c1.wallpaperflare.com/preview/954/890/571/home-sparrow-beautiful-sparrow-pakistani-sparrow-sparrow.jpg',
-                    'Indian Blackbird': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDkxjyciUbP-aseVA2vmkJPiDrSR4s0aShNA&s',
-                    'Large billed Crow': 'https://s3.animalia.bio/animals/photos/full/original/2560px-jungle-crow-28close-up-of-the-head-area292c-tennc58dji-park2c-osaka-ii.webp',
-                    'Leafbird': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/608554623/320',
-                    'Little Chachalaca': 'https://www.shutterstock.com/image-photo/colombian-chachalaca-perched-on-tree-600w-2400448869.jpg',
-                    'Pale-chinned blue flycatcher': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/171225351/320',
-                    'Philippine Megapode': 'https://upload.wikimedia.org/wikipedia/commons/9/92/Megapodius_cumingii_-North_Sulawesi%2C_Indonesia-8.jpg',
-                    'SriLankan Frogmouth': 'https://www.shutterstock.com/image-photo/avian-sri-lanka-bird-photos-600w-2391376801.jpg',
-                    'Tawny-breasted Tinamou': 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/608842317/480',
-                }[bird['Bird Name']] }}" alt="{{ bird['Bird Name'] }}">
+            <div class="bird-item">
+                <img src="{{ bird['Image2'] }}" alt="{{ bird['Bird Name'] }}">
                 <div class="bird-info">
                     <h3>{{ bird['Bird Name'] }}</h3>
                     <p>{{ bird['Description'] }}</p>
                     <a class="learn-more" href="{{ url_for('bird_details_route', bird_name=bird['Bird Name']) }}">Learn More</a>
                 </div>
-            </li>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 </body>
 </html>

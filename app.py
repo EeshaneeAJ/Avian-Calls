@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template,redirect
+from flask import Flask, request, render_template, redirect
 import os
 import numpy as np
 import librosa
@@ -9,6 +9,7 @@ from folium.plugins import MarkerCluster
 import geopandas as gpd
 from shapely.geometry import Point
 import joblib
+
 app = Flask(__name__)
 
 # Load the model, label encoder, and scaler
@@ -16,7 +17,6 @@ model_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_class
 label_encoder_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\label_encoder.pkl"
 scaler_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\scaler.pkl"
 excel_path = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\Birds_info.xlsx"
-
 
 with open(model_path, 'rb') as file:
     model = pickle.load(file)
@@ -28,7 +28,7 @@ with open(scaler_path, 'rb') as file:
     scaler = pickle.load(file)
 
 # Load bird details from Excel
-bird_details_path = os.path.join(app.root_path,'Birds_info.xlsx')
+bird_details_path = os.path.join(app.root_path, 'Birds_info.xlsx')
 bird_details = pd.read_excel(bird_details_path)
 
 # Function to extract features from audio files
@@ -69,6 +69,7 @@ def features_extractor(file):
     except Exception as e:
         print(f"Error processing {file}: {e}")
         return np.array([])
+
 def highlight_countries(bird_info):
     countries = bird_info['Origin'].split(',')
     countries = [country.strip() for country in countries]
@@ -93,7 +94,7 @@ def index():
 def explore():
     birds = bird_details.to_dict(orient='records')
     return render_template('explore.html', birds=birds)
-   
+
 @app.route('/bird/<bird_name>')
 def bird_details_route(bird_name):
     bird_info = bird_details[bird_details['Bird Name'].str.strip() == bird_name.strip()]
@@ -116,24 +117,19 @@ def bird_details_route(bird_name):
 
     return render_template('result.html', bird_info=bird_info)
 
-
-
-
-
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
-
 
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
         return redirect(request.url)
-    
+
     file = request.files['file']
     if file.filename == '':
         return redirect(request.url)
-    
+
     if file:
         # Save the uploaded file to a temporary location
         file_path = os.path.join('temp', file.filename)
@@ -145,7 +141,7 @@ def predict():
         scaler = joblib.load('scaler.pkl')
 
         # Extract features from the audio file (you need to define extract_features)
-        features =features_extractor(file_path)
+        features = features_extractor(file_path)
 
         # Scale the features
         features_scaled = scaler.transform([features])
@@ -154,13 +150,14 @@ def predict():
         prediction = svm_model.predict(features_scaled)
         predicted_bird = label_encoder.inverse_transform(prediction)[0]
 
-        # Fetch bird details
-   
+        # Fetch bird details from the Excel sheet
         bird_info = bird_details[bird_details['Bird Name'].str.strip() == predicted_bird.strip()]
         if bird_info.empty:
-           return render_template('upload.html', error_message=f'No information found for {predicted_bird}')
-    
+            return render_template('result.html', error_message=f'No information found for {predicted_bird}')
+
         bird_info = bird_info.iloc[0].to_dict()
+
+        # Correctly format the audio file path
         bird_info['Audio'] = bird_info['Audio'].replace('\\', '/')
 
         # Generate the map with highlighted countries
@@ -172,8 +169,7 @@ def predict():
 
         return render_template('result.html', bird_info=bird_info)
 
-    return redirect(request.url)
+    return render_template('result.html', error_message='Failed to process the audio file.')
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
