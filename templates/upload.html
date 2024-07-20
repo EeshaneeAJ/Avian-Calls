@@ -1,5 +1,5 @@
 
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Upload Bird Sound</title>
@@ -60,5 +60,121 @@
         {% endif %}
     </div>
 </body>
-</html>
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Bird Sound</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cormorant Garamond', serif;
+            background-image: url('https://ideogram.ai/assets/progressive-image/balanced/response/p0XDRlHwRD2gpbXmiNDcFg'); /* Add your background image URL here */
+            background-size: cover; /* Ensures the image covers the whole background */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Ensures the background stays fixed while scrolling */
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for background image visibility */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #8B4513; /* Wood color border */
+            max-width: 500px;
+            width: 100%;
+        }
+        h2 {
+            color: #B22222; /* Red color */
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .file-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 50%;
+        }
+        .file-input input[type="file"] {
+            display: none;
+        }
+        .file-input label {
+            background-color: #8B4513; /* Wood color */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .file-input label:hover {
+            background-color: #B22222; /* Red color on hover */
+        }
+        .file-name {
+            font-size: 1em;
+            margin-top: 10px;
+            margin-bottom: 20px; /* Added margin-bottom to increase space */
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        button {
+            background-color: #8B4513; /* Wood color */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            width: 50%;
+        }
+        button:hover {
+            background-color: #B22222; /* Red color on hover */
+        }
+        p {
+            color: #d32f2f; /* Red for error messages */
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Bird Sound Audio File</h2>
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <div class="file-input">
+                <input type="file" name="file" id="file" accept=".mp3,.wav" onchange="displayFileName(this)">
+                <label for="file">Choose File</label>
+            </div>
+            <span class="file-name" id="file-name">No file chosen</span>
+            <button type="submit">Upload</button>
+        </form>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+    </div>
 
+    <script>
+        function displayFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        }
+    </script>
+</body>
+</html>
