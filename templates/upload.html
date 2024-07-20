@@ -1,98 +1,37 @@
-
-<!--<!DOCTYPE html>
-<html>
-<head>
-    <title>Upload Bird Sound</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #a5d6a7; /* Darker green background */
-        }
-        .container {
-            text-align: center;
-            background-color: #ffffff; /* White background for the container */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #2e7d32; /* Dark green */
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-        input[type="file"] {
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #4caf50; /* Medium green */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #388e3c; /* Darker green */
-        }
-        p {
-            color: #d32f2f; /* Red for error messages */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Upload Bird Sound Audio File</h2>
-        <form action="/predict" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".mp3,.wav">
-            <button type="submit">Upload</button>
-        </form>
-        {% if error_message %}
-            <p>{{ error_message }}</p>
-        {% endif %}
-    </div>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Upload Bird Sound</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
+            font-family: 'Cormorant Garamond', serif;
+            background-image: url('https://ideogram.ai/assets/progressive-image/balanced/response/p0XDRlHwRD2gpbXmiNDcFg'); /* Background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            font-family: 'Cormorant Garamond', serif;
-            background-image: url('https://ideogram.ai/assets/progressive-image/balanced/response/p0XDRlHwRD2gpbXmiNDcFg'); /* Add your background image URL here */
-            background-size: cover; /* Ensures the image covers the whole background */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Ensures the background stays fixed while scrolling */
         }
         .container {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for background image visibility */
+            max-width: 800px;
+            margin: 0;
             padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
+            border: 2px solid #8B4513; /* Wood color */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border: 2px solid #8B4513; /* Wood color border */
-            max-width: 500px;
-            width: 100%;
+            text-align: center;
         }
         h2 {
-            color: #B22222; /* Red color */
-            font-size: 2em;
+            color: #4B2C20; /* Wood color */
+            font-size: 2.5em; /* Consistent with main page */
             margin-bottom: 20px;
         }
         form {
@@ -105,48 +44,53 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 10px;
-            width: 50%;
+            margin-bottom: 20px;
+            width: 100%;
         }
         .file-input input[type="file"] {
             display: none;
         }
         .file-input label {
-            background-color: #8B4513; /* Wood color */
+            background-color: #4B2C20; /* Brownish color */
             color: white;
-            padding: 15px 30px;
-            border-radius: 5px;
+            border: none;
+            padding: 10px 20px; /* Reduced padding */
+            border-radius: 3px; /* Adjusted border-radius for a smaller button */
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.2em; /* Slightly smaller font size */
             transition: background-color 0.3s ease;
-            flex-grow: 1;
-            text-align: center;
+            width: 50%; /* Set to auto for dynamic width based on content */
+            display: inline-block;
+            text-align: center; /* Center text horizontally */
         }
+        
         .file-input label:hover {
-            background-color: #B22222; /* Red color on hover */
+            background-color: #BC8F8F; /* Darker red on hover */
         }
         .file-name {
-            font-size: 1em;
+            font-size: 1.5em; /* Consistent with label and button */
             margin-top: 10px;
-            margin-bottom: 20px; /* Added margin-bottom to increase space */
+            margin-bottom: 20px;
             text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: #4B2C20; /* Wood color */
         }
         button {
-            background-color: #8B4513; /* Wood color */
+            background-color: #4B2C20; /* Brownish color */
             color: white;
             border: none;
             padding: 15px 30px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.5em; /* Consistent with label */
             transition: background-color 0.3s ease;
             width: 50%;
+            display: inline-block;
         }
         button:hover {
-            background-color: #B22222; /* Red color on hover */
+            background-color: #BC8F8F; /* Darker red on hover */
         }
         p {
             color: #d32f2f; /* Red for error messages */
@@ -160,7 +104,7 @@
         <form action="/predict" method="POST" enctype="multipart/form-data">
             <div class="file-input">
                 <input type="file" name="file" id="file" accept=".mp3,.wav" onchange="displayFileName(this)">
-                <label for="file">Choose File</label>
+                <label for="file"><h3>Choose File</h3></label>
             </div>
             <span class="file-name" id="file-name">No file chosen</span>
             <button type="submit">Upload</button>

@@ -1,36 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Bird Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIRD DETAILS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Cormorant Garamond', serif;
             background-image: url('https://ideogram.ai/assets/progressive-image/balanced/response/p0XDRlHwRD2gpbXmiNDcFg');
             background-size: cover; /* Ensures the image covers the whole background */
             background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Ensures the background stays fixed while scrolling */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #4B2C20; /* Wood color */
+            padding: 55px; /* Adjusted padding */
+            display: flex;
+            justify-content: center; /* Center the title */
+            align-items: center;
+            position: relative;
+        }
+        .navbar h1 {
+            color: white;
+            margin: 0;
+            font-size: 5em; /* Adjusted font size for title */
+            text-align: center;
+        }
+        .nav-buttons {
+            position: absolute;
+            right: 15px; /* Adjusted positioning to push buttons to the right */
+            display: flex;
+            align-items: center;
+        }
+        .nav-buttons button {
+            background-color: #F0E68C /* More brownish color */
+            color: #4B2C20;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5em; /* Larger font size for buttons */
+            transition: background-color 0.3s ease;
+            margin-left: 15px; /* Margin for separation */
+        }
+        .nav-buttons button:hover {
+            background-color: #BC8F8F; /* Darker red */
         }
         .container {
-            
-            padding: 30px;
+            padding: 50px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 800px;
+            max-width: 1000px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 100vh;
             overflow: auto;
             background-color: rgba(255, 255, 255, 0.9); 
             border-radius: 15px;
             border: 2px solid #8B4513;
+            margin-top: 60px; /* Space for the fixed navbar */
         }
         h2 {
             color: #8B4513;
             margin-top: 0;
-            font-size: 2em;
+            font-size: 3em; /* Increased font size for bird name */
+            font-weight: bold; /* Make the font bold */
         }
         img {
             max-width: 100%;
@@ -50,6 +88,7 @@
             color: #8B4513;
             word-wrap: break-word;
             border-bottom: 1px solid #ddd;
+            font-size: 1.75em;
         }
         td:first-child {
             font-weight: bold;
@@ -87,6 +126,13 @@
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <h1>BIRD INFORMATION HUB</h1>
+        <div class="nav-buttons">
+            <button onclick="location.href='/'"><i class="fas fa-home"></i> Home</button>
+            <button onclick="location.href='/explore'"><i class="fas fa-search"></i> Explore</button>
+        </div>
+    </div>
     <div class="container">
         <h2>{{ bird_info['Bird Name'] }}</h2>
         <img src="{{ bird_info['Image'] }}" alt="{{ bird_info['Bird Name'] }}">
