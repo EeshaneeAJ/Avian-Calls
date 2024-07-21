@@ -10,7 +10,7 @@ import seaborn as sns
 import pickle
 
 # Set the paths
-audio_dir = "C:\\Users\\Admin\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\audios"
+audio_dir = "C:\\Users\\Abhay\\Desktop\\bird_sound_classifier\\bird_sound_classifier\\audios"
 model_save_path = "bird_sound_model_hybrid.pkl"
 label_encoder_path = "label_encoder.pkl"
 scaler_path = "scaler.pkl"
