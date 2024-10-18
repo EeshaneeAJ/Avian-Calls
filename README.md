@@ -1,5 +1,3 @@
-Here's a template for a `README.md` file for your bird sound classification project. You can customize it as needed:
-
 ```markdown
 Bird Sound Classification
 
